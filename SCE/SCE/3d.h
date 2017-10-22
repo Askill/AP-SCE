@@ -61,7 +61,7 @@ public:
 
 
 			cout << "Definieren Sie die Teilabschnitte des Zylinders" << endl;
-			cout << "	Laenge: "; cin >> teil_lange; heights.push_back(teil_lange);
+			cout << "	Laenge in mm: "; cin >> teil_lange; heights.push_back(teil_lange);
 			cout << "	Durchmesser in mm: "; cin >> teil_durchmesser; radii.push_back(teil_durchmesser);
 			cout << "	Dichte in g/mm^3: "; cin >> teil_dichte; densities.push_back(teil_dichte);
 			cout << "	Spezifischer Widerstand in ohm * (mm^2) / m: "; cin >> teil_widerstand; resistances.push_back(teil_widerstand);
@@ -110,7 +110,7 @@ public:
 		Circle circle;
 		for (int i = 0; heights.size() != i; i++)
 		{
-			mass = mass + heights[i] * circle.compute_area(radii[i]) * densities[i];
+			mass = mass + heights[i]/10 * circle.compute_area(radii[i]/10) * densities[i];
 		}
 		set_mass(mass);
 		return mass;
@@ -121,7 +121,7 @@ public:
 		Circle circle;
 		for (int i = 0; heights.size() != i; i++)
 		{
-			resistance = resistance + heights[i] * 1000 * circle.compute_area(radii[i]) * resistances[i];
+			resistance = resistance + ((heights[i]/1000) * resistances[i]) / circle.compute_area(radii[i]);
 		}
 		set_electric_resistance(resistance);
 		return resistance;
