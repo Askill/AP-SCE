@@ -27,7 +27,7 @@ public:
 
 	virtual long double compute_volume() { return 0; };
 	virtual long double compute_mass() { return 0; };
-	virtual long double compute_electric_resistamce() { return 0; };
+	virtual long double compute_electric_resistance() { return 0; };
 
 	Body() {};
 	virtual ~Body() {};
@@ -46,5 +46,5 @@ public:
 	void compute_options() override;
 	long double compute_volume() override;
 	long double compute_mass()override;
-	long double compute_electric_resistamce() override;
+	long double compute_electric_resistance() override;
 };

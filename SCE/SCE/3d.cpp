@@ -46,7 +46,7 @@ void Cylinder::compute_options() {
 		{
 		case '1': cout << "Volumen:	" << compute_volume() << " mm^3" << endl; break;
 		case '2': cout << "Masse:	" << compute_mass() << " g" << endl; break;
-		case '3': cout << "Widerstand:	" << compute_electric_resistamce() << " ohm" << endl; break;
+		case '3': cout << "Widerstand:	" << compute_electric_resistance() << " ohm" << endl; break;
 
 		default: cout << "Okay, bye" << endl; break;
 		}
@@ -76,7 +76,7 @@ long double Cylinder::compute_mass()
 	set_mass(mass);
 	return mass;
 }
-long double Cylinder::compute_electric_resistamce()
+long double Cylinder::compute_electric_resistance()
 {
 	long double resistance = 0;
 	Circle circle;
