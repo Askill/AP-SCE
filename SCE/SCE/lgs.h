@@ -19,4 +19,7 @@ public:
 	void creat_array();
 	void print();
 	void print_ln(int);
+	void print_exp();
+	void gauss_down();
+	void gauss_up(){};
 };

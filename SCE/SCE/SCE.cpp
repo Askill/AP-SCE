@@ -13,7 +13,7 @@ int main()
 	{
 		cout << "Was wollen Sie tun ?" << endl;
 		cout << "1 Berechungen an einem Zylinder" << endl;
-		cout << "2 LGS lösen" << endl;
+		cout << "2 LGS loesen" << endl;
 
 		cout << "e Beenden" << endl;
 		

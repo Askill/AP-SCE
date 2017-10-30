@@ -12,9 +12,7 @@ void LGS::data_entry()
 		cout << "Anzahl der Unbekannten: "; cin >> variables;
 		creat_array();
 		cout << "Geben Sie die Gleichungen nach folgendem Schema an:" << endl;
-		cout << "[A1 *x][B1 *y][C1 *z]=[D1]" << endl;
-		cout << "[A2 *x][B2 *y][C2 *z]=[D2]" << endl;
-		cout << "[A3 *x][B3 *y][C3 *z]=[D3]" << endl;
+		print_exp();
 		
 		for (int i = 0; i < variables; ++i)
 		{
@@ -30,11 +28,11 @@ void LGS::data_entry()
 			cout << endl;
 		}
 		print();
-		cout << "Sind die angaben Korrekt? j/n"; cin >> auswahl;
+		cout << "Sind die angaben Korrekt? j/n "; cin >> auswahl;
 		
 	}
 	cout << endl;	
-	
+	gauss_down();
 }
 
 void LGS::creat_array()
@@ -50,7 +48,7 @@ void LGS::print()
 	{
 		for (int n = 0; n < variables + 1; ++n)
 		{
-			cout << GA[i][n] << " ";
+			cout << (GA[i][n] > 0 ? (n == 0 ? " " : " +") : " ") << GA[i][n] << " ";
 			if (n == variables-1)
 				cout << "= ";
 		}
@@ -63,12 +61,29 @@ void LGS::print_ln(int ln)
 	for (int n = 0; n < variables + 1; ++n)
 	{
 		int var = 123 - variables + n;
-		cout << " +" << GA[ln][n] << (var!=123  ? (char)var : ' ');
+		cout << (GA[ln][n] > 0 ? (n==0 ? " " : " +"): " ") << GA[ln][n] << (var!=123  ? (char)var : ' ');
 		if (n == variables - 1)
 			cout << "= ";
 	}
 	cout << endl;
 }
+
+void LGS::print_exp()
+{
+	for (int i = 0; i < variables; ++i)
+	{
+		for (int n = 0; n < variables + 1; ++n)
+		{
+			int var1 = n + 65;
+			int var2 = 123 - variables + n;
+			cout << "[" << (char)var1 << i + 1; var2!=123 ? cout<< (" *") : cout << ""; var2 != 123 ? cout << (char)var2 : cout << ""; cout << "]";
+			if (n == variables - 1)
+				cout << "= ";
+		}
+		cout << endl;
+	}
+}
+
 
 float LGS::cramer()
 {
@@ -80,9 +95,32 @@ float LGS::cramer()
 float LGS::gauss()
 {
 	double t1 = clock();
-
+	gauss_down();
+	gauss_up();
 	return (float)((clock() - t1) / CLOCKS_PER_SEC);
 }
+
+void LGS::gauss_down( )
+{
+	for(int stage = 1; stage < (variables==2 ? variables : variables-1) ; stage++)
+	{
+		long double div = (GA[stage][stage-1] / GA[stage-1][stage-1]);
+		for (int i = 0; i < variables-1; i++)
+		{
+			for (int n = 0; n <= variables; n++)
+			{
+				GA[stage + i][n] = GA[stage + i][n] - (GA[stage - 1][n] * div);
+			}
+
+		}
+
+		print();
+		cout << endl;
+	}
+		
+	
+}
+
 
 
 
