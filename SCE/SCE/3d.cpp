@@ -23,7 +23,7 @@ void Cylinder::data_entry()
 		cout << "Definieren Sie die Teilabschnitte des Zylinders" << endl;
 		cout << "	Laenge in mm: "; cin >> teil_lange; heights.push_back(teil_lange);
 		cout << "	Durchmesser in mm: "; cin >> teil_durchmesser; radii.push_back(teil_durchmesser);
-		cout << "	Dichte in g/mm^3: "; cin >> teil_dichte; densities.push_back(teil_dichte);
+		cout << "	Dichte in g/cm^3: "; cin >> teil_dichte; densities.push_back(teil_dichte);
 		cout << "	Spezifischer Widerstand in ohm * (mm^2) / m: "; cin >> teil_widerstand; resistances.push_back(teil_widerstand);
 		cout << "	Gibt es weitere Teilbereiche? j/n "; cin >> auswahl;
 	}

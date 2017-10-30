@@ -1,8 +1,10 @@
 #include "3d.h"
 #include <iostream>
+#include "lgs.h"
 using namespace std;
 
 void cylinder();
+void lgs();
 
 int main()
 {
@@ -11,6 +13,7 @@ int main()
 	{
 		cout << "Was wollen Sie tun ?" << endl;
 		cout << "1 Berechungen an einem Zylinder" << endl;
+		cout << "2 LGS lösen" << endl;
 
 		cout << "e Beenden" << endl;
 		
@@ -18,6 +21,7 @@ int main()
 		switch(auswahl)
 		{
 			case '1': cylinder(); break;
+			case '2': lgs(); break;
 			
 			default: cout << "Okay, bye" << endl; break;
 		}
@@ -31,4 +35,9 @@ void cylinder()
 	cylinder.data_entry();
 	cylinder.compute_options();
 
+}
+void lgs()
+{
+	LGS lgs;
+	lgs.data_entry();
 }
