@@ -39,6 +39,6 @@ void cylinder()
 void lgs()
 {
 	LGS lgs;
-	lgs.data_entry();
-	cout << lgs.gauss() << endl;
+	//lgs.data_entry();
+	lgs.gauss();
 }

@@ -2,6 +2,7 @@
 class LGS{
 public:
 	long double** GA;
+	long double* x;
 	int variables = 0;
 
 
@@ -11,15 +12,15 @@ public:
 		for (int i = 0; i < variables; ++i)
 			delete[] GA[i];
 		delete[] GA;
+		delete[] x;
 	};
 
-	float gauss();
+	
 	float cramer();
 	void data_entry();
 	void creat_array();
 	void print();
 	void print_ln(int);
 	void print_exp();
-	void gauss_down();
-	void gauss_up();
+	float gauss();
 };
