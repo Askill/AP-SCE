@@ -22,13 +22,16 @@ void LGS::data_entry()
 				cout << " "; 
 				int var = n + 65;
 				cout << (char)var << i + 1 << ": ";
-				cin >> GA[i][n];
+				long double temp;
+				cin >> temp;
+				GA[i][n] = temp;
+				CA[i][n] = temp;
 				
 			}
 			print_ln(i);
 			cout << endl;
 		}
-		print();
+		print(CA);
 		cout << "Sind die Angaben Korrekt? j/n "; cin >> auswahl;
 		
 	}
@@ -38,12 +41,48 @@ void LGS::data_entry()
 void LGS::create_array()
 {
 	x = new long double[variables];
+
 	GA = new long double*[variables];
 	for (int i = 0; i < variables; ++i)
 		GA[i] = new long double[variables+1];
+
+	CA = new long double*[variables];
+	for (int i = 0; i < variables; ++i)
+		CA[i] = new long double[variables + 1];
+
+	CA2 = new long double*[variables];
+	for (int i = 0; i < variables; ++i)
+		CA2[i] = new long double[variables + 1];
 }
 
-void LGS::print()
+void LGS::copy_array()
+{
+	for (int i = 0; i < variables; ++i)
+		for (int n = 0; n < variables + 1; ++n)
+			CA2[i][n] = CA[i][n];
+	
+}
+
+void LGS::swap_column(long double** ca2, int col)
+{
+	long double* temp = new long double[variables];
+
+	for(int i=0; i < variables ;i++)
+	{
+		temp[i] = CA[i][variables];
+	}
+
+	for(int i=0; i < variables ;i++)
+	{
+		CA2[i][col] = temp[i];
+	}
+	print(CA2);
+	cout << endl;
+}
+
+
+
+void LGS::print(long double** GA)
 {
 	for (int i = 0; i < variables; ++i)
 	{
@@ -102,7 +141,7 @@ float LGS::gauss()
 				}
 
 	cout << endl << "Matrix nach Pivot: " << endl;
-	print();
+	print(CA);
 
 	for (i = 0; i<variables - 1; i++)					//gauss elimination
 		for (k = i + 1; k<variables; k++)
@@ -113,7 +152,7 @@ float LGS::gauss()
 		}
 
 	cout << endl << "Matrix nach Gausselimination: " << endl;
-	print();
+	print(CA);
 
 	for (i = variables - 1; i >= 0; i--)                //back-substitution
 	{													//x is an array whose values correspond to the values of x,y,z..
@@ -138,8 +177,21 @@ float LGS::cramer()
 {
 	double t1 = clock();
 
-	long double det1 = determinant(GA,variables);
-	cout << det1;
+	long double detA = determinant(CA,variables);
+	copy_array();
+	for(int i = 0; i < variables; i++)
+	{
+		swap_column(CA2, i);
+		x[i] = determinant(CA2, variables);
+		cout << x[i] << " ";
+	}
+
+	cout << endl << "Loesung: " << endl;				
+	for (int i = 0; i<variables; i++) {
+		int var1 = i + 65;
+		cout << (char)var1 << 1 << " = " << x[i]/detA << endl;
+	}
+	cout << endl;
 
 	return (float)((clock() - t1) / CLOCKS_PER_SEC);
 }
