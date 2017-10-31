@@ -18,9 +18,11 @@ public:
 	
 	float cramer();
 	void data_entry();
-	void creat_array();
+	void create_array();
 	void print();
 	void print_ln(int);
 	void print_exp();
 	float gauss();
+	long double determinant(long double**, int);
+		
 };

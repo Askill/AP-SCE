@@ -11,7 +11,7 @@ void LGS::data_entry()
 	while (auswahl == 'n')
 	{
 		cout << "Anzahl der Unbekannten: "; cin >> variables;
-		creat_array();
+		create_array();
 		cout << "Geben Sie die Gleichungen nach folgendem Schema an:" << endl;
 		print_exp();
 		
@@ -35,7 +35,7 @@ void LGS::data_entry()
 	cout << endl;	
 }
 
-void LGS::creat_array()
+void LGS::create_array()
 {
 	x = new long double[variables];
 	GA = new long double*[variables];
@@ -138,5 +138,46 @@ float LGS::cramer()
 {
 	double t1 = clock();
 
+	long double det1 = determinant(GA,variables);
+	cout << det1;
+
 	return (float)((clock() - t1) / CLOCKS_PER_SEC);
+}
+
+long double LGS::determinant(long double** ga, int m)   
+{
+
+	long double sum = 0;
+	long double** t = new long double*[variables];
+	for (int i = 0; i < variables; ++i)
+		t[i] = new long double[variables];
+
+	if (m == 2)
+	{												
+		sum = ga[0][0] * ga[1][1] - ga[0][1] * ga[1][0];
+		return sum;
+	}
+	for (int p = 0; p<m; p++)
+	{
+		int h = 0, k = 0;
+		for (int i = 1; i<m; i++)
+		{
+			for (int j = 0; j<m; j++)
+			{
+				if (j == p)
+					continue;
+				t[h][k] = ga[i][j];
+				k++;
+				if (k == m - 1)
+				{
+					h++;
+					k = 0;
+				}
+
+			}
+		}
+
+		sum = sum + ga[0][p] * pow(-1, p)*determinant(t, m - 1);
+	}
+	return sum;
 }
