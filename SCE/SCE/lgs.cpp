@@ -66,7 +66,7 @@ void LGS::copy_array()
 void LGS::swap_column(long double** ca2, int col)
 {
 	long double* temp = new long double[variables];
-
+	copy_array();
 	for(int i=0; i < variables ;i++)
 	{
 		temp[i] = CA[i][variables];

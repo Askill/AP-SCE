@@ -40,7 +40,7 @@ void lgs()
 {
 	LGS lgs;
 	lgs.data_entry();
-	//lgs.gauss();
-	lgs.cramer();
+	cout << lgs.gauss();
+	cout << lgs.cramer();
 	cout << endl;
 }
