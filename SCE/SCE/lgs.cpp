@@ -1,8 +1,7 @@
 #include "lgs.h"
 #include "time.h"
 #include <iostream>
-#include<iostream>
-#include<iomanip>
+
 using namespace std;
 
 void LGS::data_entry()
@@ -86,7 +85,7 @@ void LGS::print_exp()
 	}
 }
 
-float LGS::gauss()
+float LGS::gauss()										
 {
 	double t1 = clock();
 
@@ -101,6 +100,7 @@ float LGS::gauss()
 					GA[i][j] = GA[k][j];
 					GA[k][j] = temp;
 				}
+
 	cout << endl << "Matrix nach Pivot: " << endl;
 	print();
 
@@ -124,10 +124,10 @@ float LGS::gauss()
 		x[i] = x[i] / GA[i][i];							//now finally divide the rhs by the coefficient of the variable to be calculated
 	}
 
-	cout << endl << "Loesung: " << endl;
+	cout << endl << "Loesung: " << endl;				// Print the values of x, y, z
 	for (i = 0; i<variables; i++){
 		int var1 = i + 65;
-		cout << (char)var1 << 1 << " = " << x[i] << endl;							// Print the values of x, y,z,....    
+		cout << (char)var1 << 1 << " = " << x[i] << endl;  
 	}
 	cout << endl;
 
