@@ -21,5 +21,5 @@ public:
 	void print_ln(int);
 	void print_exp();
 	void gauss_down();
-	void gauss_up(){};
+	void gauss_up();
 };
