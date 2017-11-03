@@ -5,6 +5,7 @@ using namespace std;
 
 void cylinder();
 void lgs();
+void nlgs();
 
 int main()
 {
@@ -14,6 +15,7 @@ int main()
 		cout << "Was wollen Sie tun ?" << endl;
 		cout << "1 Berechungen an einem Zylinder" << endl;
 		cout << "2 LGS loesen" << endl;
+		cout << "3 n.LGS loesen" << endl;
 
 		cout << "e Beenden" << endl;
 		
@@ -22,6 +24,7 @@ int main()
 		{
 			case '1': cylinder(); break;
 			case '2': lgs(); break;
+			case '3': nlgs(); break;
 			
 			default: cout << "Okay, bye" << endl; break;
 		}
@@ -43,4 +46,8 @@ void lgs()
 	cout << lgs.gauss();
 	cout << lgs.cramer();
 	cout << endl;
+}
+void nlgs()
+{
+	
 }
