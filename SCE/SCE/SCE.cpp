@@ -1,6 +1,7 @@
 #include "3d.h"
 #include <iostream>
 #include "lgs.h"
+#include "nlgs.h"
 using namespace std;
 
 void cylinder();
@@ -39,6 +40,7 @@ void cylinder()
 	cylinder.compute_options();
 
 }
+
 void lgs()
 {
 	LGS lgs;
@@ -47,6 +49,7 @@ void lgs()
 	cout << lgs.cramer();
 	cout << endl;
 }
+
 void nlgs()
 {
 	

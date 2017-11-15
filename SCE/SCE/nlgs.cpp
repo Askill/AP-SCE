@@ -53,6 +53,17 @@ long double  nlgs::newton(long double start, int limit)
 	return x;
 }
 
+long double nlgs::secant(long double A, long double B, int limit)
+{
+	long double a = A, b = B;
+	for (int i = limit; i--;)
+	{
+		
+	}
+	return a;
+}
+
+
 
 
 
