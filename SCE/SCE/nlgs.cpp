@@ -4,24 +4,24 @@
 using namespace std;
 
 
-long double nlgs::function(long double x)
+long double NLGS::function(long double x)
 {
 	return (pow(x, 4) - x - 10);
 }
 
-long double nlgs::function_fixedpoint(long double x)
+long double NLGS::function_fixedpoint(long double x)
 {
 	return pow(x+10, 1/4);
 }
 
-long double nlgs::function_derived(long double x)
+long double NLGS::function_derived(long double x)
 {
 	return 4 * pow(x, 3) - 1;
 }
 
 
 
-long double  nlgs::bisektion(long double A, long double B , int limit)
+long double  NLGS::bisektion(long double A, long double B , int limit)
 {
 	long double a = A, b = B, c;
 	for (int i = limit; i--;) 
@@ -33,7 +33,7 @@ long double  nlgs::bisektion(long double A, long double B , int limit)
 	return c;
 }
 
-long double  nlgs::fixedpoint(long double start, int limit)
+long double  NLGS::fixedpoint(long double start, int limit)
 {
 	long double x = start;
 	for(int i = limit ; i-- ;)
@@ -43,7 +43,7 @@ long double  nlgs::fixedpoint(long double start, int limit)
 	return x;
 }
 
-long double  nlgs::newton(long double start, int limit)
+long double  NLGS::newton(long double start, int limit)
 {
 	long double x = start;
 	for (int i = limit; i--;)
@@ -53,7 +53,7 @@ long double  nlgs::newton(long double start, int limit)
 	return x;
 }
 
-long double nlgs::secant(long double A, long double B, int limit)
+long double NLGS::secant(long double A, long double B, int limit)
 {
 	long double a = A, b = B;
 	for (int i = limit; i--;)
