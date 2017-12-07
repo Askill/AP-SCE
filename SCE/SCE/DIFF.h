@@ -10,11 +10,12 @@ public:
 	vector<long double> y1values; //y-values of 1st derivative
 	vector<long double> y2values; //y-values of 2nd derivative
 	vector<long double> diff();
-	vector<long double> forward_diff();
-	vector<long double> backward_diff();
+	
 
 	vector<long double> forward_diff(vector<long double>);
 	vector<long double> backward_diff(vector<long double>);
+	static vector<long double> central_diff(vector<long double>, vector<long double>);
+	static vector<long double> mid_diff(vector<long double>, vector<long double>);
 
 
 	DIFF();

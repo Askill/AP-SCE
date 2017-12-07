@@ -83,9 +83,17 @@ void nlgs()
 }
 
 void diff() {
+	//Plotter: https://www.desmos.com/calculator
+
 	DIFF diff;
-	
-	print_array(diff.xvalues.data(), diff.forward_diff().data(), diff.xvalues.size());
-	print_array(diff.xvalues.data(), diff.backward_diff(diff.forward_diff()).data(), diff.xvalues.size());
+	vector<long double> AbfullX = {0, 5, 10, 15, 20 };
+	vector<long double> AbfullY = {1, 0.8811, 0.7366, 0.5430, 0.1698};
+	cout << "Erste Ableitung mit forward und backward" << endl;
+	print_array(diff.xvalues.data(), diff.forward_diff(diff.yvalues).data(), diff.xvalues.size());
+	print_array(diff.xvalues.data(), diff.central_diff(diff.yvalues, diff.xvalues).data(), diff.xvalues.size());
+	cout << "Zweite Ableitung mit backward" << endl;
+	print_array(diff.xvalues.data(), diff.backward_diff(diff.forward_diff(diff.yvalues)).data(), diff.xvalues.size());
+	cout << "Erste Ableitung 6.1.2" << endl;
+	print_array(diff.xvalues.data(), diff.mid_diff(AbfullY, AbfullX).data(), AbfullX.size());
 	
 }
