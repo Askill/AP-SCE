@@ -3,7 +3,6 @@ using namespace std;
 
 DIFF::DIFF()
 {
-	y1values.resize(yvalues.size());
 }
 
 
@@ -70,10 +69,16 @@ vector<long double> DIFF::mid_diff(vector<long double>y, vector<long double>x)
 
 	temp.at(i) = (y.at(i + 1) - y.at(i)) / (x.at(i + 1) - x.at(i));
 	i++;
-	for (; i < y.size() - 1; i++)
+	temp.at(i) = (y.at(i + 1) - y.at(i)) / (x.at(i + 1) - x.at(i));
+	temp.at(i) += (y.at(i + 1) - y.at(i - 1)) / (x.at(i + 1) - x.at(i - 1));
+	temp.at(i) /= 2;
+	for (; i < y.size() - 2; ++i)
 	{
 		temp.at(i) = (y.at(i + 1) - y.at(i - 1)) / (x.at(i + 1) - x.at(i - 1));
 	}
+	temp.at(i) += (y.at(i) - y.at(i - 1)) / (x.at(i) - x.at(i - 1));
+	temp.at(i) /= 2;
+	i++;
 	temp.at(i) = (y.at(i) - y.at(i - 1)) / (x.at(i) - x.at(i - 1));
 	
 	return temp;
