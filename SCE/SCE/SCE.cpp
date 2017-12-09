@@ -90,7 +90,7 @@ void optimization()
 {
 	OPTIMIZATION opt;
 
-	long double lower_bound = -2, upper_bound = 2;		//upper / lower - _bounds instead of theta-vector
+	long double lower_bound = -2, upper_bound = -2;		//upper / lower - _bounds instead of theta-vector
 	long double increments = 0.1;
 	
 	long double z = opt.g_von_theta(lower_bound, upper_bound);
@@ -111,7 +111,7 @@ void optimization()
 		else
 		{
 			thetanew.at(0) = lower_bound;
-			thetanew.at(1) = upper_bound - increments;
+			thetanew.at(1) = upper_bound + increments;
 		}
 
 		long double znew = opt.g_von_theta(thetanew.at(0), thetanew.at(1));
