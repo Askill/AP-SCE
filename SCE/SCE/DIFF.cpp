@@ -11,7 +11,7 @@ DIFF::~DIFF()
 }
 
 
-vector<long double> DIFF::diff()
+vector<long double> DIFF::diff(vector<long double> yvalues)
 {
 	vector<long double> diff = yvalues;
 	vector<long double> xdiff (diff.size()-1);
@@ -23,7 +23,7 @@ vector<long double> DIFF::diff()
 	return xdiff;
 }
 
-vector<long double> DIFF::backward_diff(vector<long double> y)
+vector<long double> DIFF::backward_diff(vector<long double> y, vector<long double> xvalues)
 {
 	vector<long double> temp;
 	temp.resize(y.size());
@@ -35,7 +35,7 @@ vector<long double> DIFF::backward_diff(vector<long double> y)
 	temp.at(y.size()-1) = 0;
 	return temp;
 }
-vector<long double> DIFF::forward_diff(vector<long double> y)
+vector<long double> DIFF::forward_diff(vector<long double> y, vector<long double> xvalues)
 {
 	vector<long double> temp;
 	temp.resize(y.size());
@@ -72,10 +72,12 @@ vector<long double> DIFF::mid_diff(vector<long double>y, vector<long double>x)
 	temp.at(i) = (y.at(i + 1) - y.at(i)) / (x.at(i + 1) - x.at(i));
 	temp.at(i) += (y.at(i + 1) - y.at(i - 1)) / (x.at(i + 1) - x.at(i - 1));
 	temp.at(i) /= 2;
+
 	for (; i < y.size() - 2; ++i)
 	{
 		temp.at(i) = (y.at(i + 1) - y.at(i - 1)) / (x.at(i + 1) - x.at(i - 1));
 	}
+
 	temp.at(i) += (y.at(i) - y.at(i - 1)) / (x.at(i) - x.at(i - 1));
 	temp.at(i) /= 2;
 	i++;
