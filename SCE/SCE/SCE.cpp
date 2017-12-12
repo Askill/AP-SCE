@@ -4,6 +4,10 @@
 #include "nlgs.h"
 #include "DIFF.h"
 #include "OPTIMIZATION.h"
+#include "INTEGRAL.h"
+#include <math.h>
+
+#define PI 3.14159265358979323846
 using namespace std;
 
 void cylinder();
@@ -11,6 +15,8 @@ void lgs();
 void nlgs();
 void optimization();
 void diff();
+void integ();
+
 void print_array(long double* a, int size)
 {
 	cout << endl;
@@ -41,10 +47,12 @@ int main()
 		cout << "3 n.LGS loesen" << endl;
 		cout << "4 optimization" << endl;
 		cout << "5 numerische differentation" << endl;
+		cout << "6 numerische Integration" << endl;
 
 		cout << "e Beenden" << endl;
 		
 		cin >> auswahl;
+		cout << endl;
 		switch(auswahl)
 		{
 			case '1': cylinder(); break;
@@ -52,6 +60,7 @@ int main()
 			case '3': nlgs(); break;
 			case '4': optimization(); break;
 			case '5': diff(); break;
+			case '6': integ(); break;
 			
 			default: cout << "Okay, bye" << endl; break;
 		}
@@ -90,47 +99,51 @@ void optimization()
 {
 	OPTIMIZATION opt;
 
-	long double lower_bound = -2, upper_bound = -2;		//upper / lower - _bounds instead of theta-vector
-	long double increments = 0.1;
+	long double x = -5, y = -5, 
+	xnew, ynew,
+	increments = 0.1,
+	z = opt.g_von_theta(x, y),
+	znew = 0, zold = 1,
+	zinitial = z;
+	int xTOy = 1, iAThalf = 100; //iAThalf: max iterations/2
 	
-	long double z = opt.g_von_theta(lower_bound, upper_bound);
-	long double which_theta = 1;
+	cout << "i" << "\t" << "z" << "\t" << "x" << "\t" << "y" << endl;
 
-	vector<long double> thetanew(2);
-	cout << "i" << "\t" << "z" << "\t" << "lb" << "\t" << "ub" << endl;
-
-	for(int i = 0; i < 41; i++)
+	for(int i = 0 ; i <= 2 * iAThalf + 1; ++i) // add. exit crit. needed
 	{
-		
-		cout << i << "\t" << z << "\t" << lower_bound << "\t" << upper_bound << endl;
-		if (which_theta == 1)
+		cout << i << "\t" << z << "\t" << x << "\t" << y << endl;
+		if (xTOy == 1)
 		{
-			thetanew.at(0) = lower_bound + increments;
-			thetanew.at(1) = upper_bound;
+			xnew = x;
+			ynew = y;
+			if (zinitial / 2 == z)	//appropriate criteria?
+			{
+				iAThalf = i;
+				ynew = y + increments;
+			}
+			else
+				xnew = x + increments;
 		}
 		else
 		{
-			thetanew.at(0) = lower_bound;
-			thetanew.at(1) = upper_bound + increments;
+			xnew = x;
+			ynew = y + increments;
 		}
 
-		long double znew = opt.g_von_theta(thetanew.at(0), thetanew.at(1));
-
+		znew = opt.g_von_theta(xnew, ynew);
+		zold = z;
 		if(znew > z)
 		{
 			z = znew;
-			lower_bound = thetanew.at(0);
-			upper_bound = thetanew.at(1);
+			x = xnew;
+			y = ynew;
 		}
 		else
-		{
-			if (which_theta == 1)
-				which_theta = 2;
-		}
-		
+			if (xTOy == 1)
+				xTOy = 2;		
 	}
 	
-
+	cout << endl;
 }
 
 void diff() {
@@ -152,4 +165,12 @@ void diff() {
 	cout << "Erste Ableitung 6.1.2" << endl;
 	print_array(xvalues.data(), diff.mid_diff(AbfullY, AbfullX).data(), AbfullX.size());
 	
+}
+
+
+void integ()
+{
+	INTEGRAL integ;
+	cout << integ.trapz(0, (PI / 2), 0.001) << endl << endl;
+	cout << integ.quad(0, (PI / 2), 0.001) << endl << endl;
 }
