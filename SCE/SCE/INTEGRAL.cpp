@@ -18,10 +18,10 @@ long double INTEGRAL::trapz(long double x0, long double x1, long double precisio
 {
 	long double A = 0, a = x0, b = a + precision;
 	
-	for(; a < x1; a += precision)
+	for(; a < x1; a += precision, b += precision)
 	{
 		A += (b - a)*((funkt(b) + funkt(a))/2);
-		b += precision;
+		
 	}
 
 	return A;
@@ -37,6 +37,7 @@ long double INTEGRAL::quad(/*long double (* funk)(long double), */long double x0
 		A += fak*funkt(a);
 		i % 2 ? fak = 2 : fak = 4;
 	}
+	A += funkt(a);
 	return A*precision/3;
 }
 
