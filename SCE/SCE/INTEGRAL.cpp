@@ -29,7 +29,7 @@ long double INTEGRAL::trapz(long double x0, long double x1, long double precisio
 
 long double INTEGRAL::quad(/*long double (* funk)(long double), */long double x0, long double x1, long double precision)
 {
-	long double A = 0, a = x0, b = a + precision;
+	long double A = 0, a = x0;
 	int fak = 1;
 
 	for (int i = 0; a < x1; a += precision, i++)
