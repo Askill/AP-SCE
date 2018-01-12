@@ -16,6 +16,7 @@ void nlgs();
 void optimization();
 void diff();
 void integ();
+void anfangswert();
 
 void print_array(long double* a, int size)
 {
@@ -48,7 +49,7 @@ int main()
 		cout << "4 optimization" << endl;
 		cout << "5 numerische differentation" << endl;
 		cout << "6 numerische Integration" << endl;
-
+		cout << "7 Anfangswertproblem" << endl;
 		cout << "e Beenden" << endl;
 		
 		cin >> auswahl;
@@ -61,6 +62,7 @@ int main()
 			case '4': optimization(); break;
 			case '5': diff(); break;
 			case '6': integ(); break;
+			case '7': anfangswert(); break;
 			
 			default: cout << "Okay, bye" << endl; break;
 		}
@@ -173,4 +175,9 @@ void integ()
 	INTEGRAL integ;
 	cout << integ.trapz(0, (PI / 2), 0.001) << endl << endl;
 	cout << integ.quad(0, (PI / 2), 0.001) << endl << endl;
+}
+
+void anfangswert()
+{
+	cout << "nope";
 }

@@ -20,11 +20,11 @@ void mexFunction(int nlhs, mxArray *plhs[], 			// Output
 	double ya = 0;
 	
 	
-//trapz
+//quad
 	mxArray *func_Input[1];
 	mxArray *func_Outputs[1]; 
 
-	for(int i = 0; a < x1; a += precision)
+	for(int i = 0; a < x1; a += precision,i++)
 	{
 		func_Input[0] = mxCreateDoubleScalar(a);
 		mexCallMATLAB(1, func_Outputs , 1 , func_Input , func_Name);
