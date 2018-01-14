@@ -46,7 +46,35 @@ void mexFunction(int nlhs, mxArray *plhs[], 			// Output variables
 				x[i] = x[i] - GA[i][j] * x[j];
 		x[i] = x[i] / GA[i][i];							//now finally divide the rhs by the coefficient of the variable to be calculated
 	}
+	
 	nlhs = variables;
+	for(int l=0;l<variables;l++){
+		char temp;
+		
+		if(x[variables-1-l] != 0)
+		{
+			if(l!=0){
+			mexPrintf("+");
+			}
+			if(x[variables-1-l] < 0 ){
+				mexPrintf("-");
+				x[variables-l] *= -1;
+			}
+			temp=(char)(48+x[variables-1-l]);
+			mexPrintf("%c",temp);
+			
+			if(variables-1-l != 0){
+				mexPrintf("*");
+				mexPrintf("x");
+				mexPrintf("^");
+				temp=(char)(48+variables-1-l);
+				mexPrintf("%c",temp);
+			}
+			
+		}
+		
+	}
+	mexPrintf("\n");
 	for(int j=0; j < variables; j++){
 		plhs[j]=mxCreateDoubleScalar(x[j]);
 		
