@@ -1,22 +1,39 @@
 #include "mex.h" 
 #include "matrix.h"
 #include "stdlib.h"
+#include "math.h"
 
 void mexFunction(int nlhs, mxArray *plhs[], 			// Output variables 
 				 int nrhs, const mxArray *prhs[]) 		// Input variables 
 {
 	int variables = *mxGetPr(prhs[0]);
 	
-	double* x = (double *)mxCalloc(variables+1, sizeof(double));					//create solution array
+	double* x = (double *)mxCalloc(variables, sizeof(double));					//create solution array
+	
+	double* xx = (double *)mxCalloc(variables, sizeof(double));
+	double* yy = (double *)mxCalloc(variables, sizeof(double));
 	
 	double** GA = (double **)mxCalloc(variables+1, sizeof(double*));				//create Gauss Array (GA)
-	for (int i = 0; i <= variables+1; i++){
+	for (int i = 0; i <= variables; i++){
 		GA[i] = (double *)mxCalloc(variables+1, sizeof(double));
 	}
 	
-	for(int i = 0; i < variables*(variables+1); i++){							//copy input array into GA								
-		GA[i%variables][i/variables] = mxGetPr(prhs[1])[i];	
+	for(int i=0;i<variables;i++){
+		xx[i]=mxGetPr(prhs[1])[i];
 	}
+	for(int i=0;i<variables;i++){
+		yy[i]=mxGetPr(prhs[2])[i];
+	}
+	
+	for(int i=0;i<variables;i++){
+		for(int j=0; j<variables;j++){
+			GA[i][j] = pow(xx[i],j);
+		}
+	}
+	for(int i=0;i<variables;i++){
+		GA[i][variables] = yy[i];
+	}
+
 	
 	
 	int i, j, k;
@@ -48,6 +65,10 @@ void mexFunction(int nlhs, mxArray *plhs[], 			// Output variables
 	}
 	
 	nlhs = variables;
+	for(int j=0; j < variables; j++){
+		plhs[j]=mxCreateDoubleScalar(x[j]);
+		
+	}
 	for(int l=0;l<variables;l++){
 		char temp;
 		
@@ -75,10 +96,7 @@ void mexFunction(int nlhs, mxArray *plhs[], 			// Output variables
 		
 	}
 	mexPrintf("\n");
-	for(int j=0; j < variables; j++){
-		plhs[j]=mxCreateDoubleScalar(x[j]);
-		
-	}
+	
 	
 	for (int i = 0; i <= variables; i++ ){
 		free(GA[i]);
