@@ -7,103 +7,69 @@ void mexFunction(int nlhs, mxArray *plhs[], 			// Output variables
 				 int nrhs, const mxArray *prhs[]) 		// Input variables 
 {
 	int variables = *mxGetPr(prhs[0]);
+	variables++;
+	double inc = *mxGetPr(prhs[1]);
+
+		
+	double* x = (double *)mxCalloc(variables, sizeof(double));
+	double* y = (double *)mxCalloc(variables, sizeof(double));
 	
-	double* x = (double *)mxCalloc(variables, sizeof(double));					//create solution array
-	
-	double* xx = (double *)mxCalloc(variables, sizeof(double));
-	double* yy = (double *)mxCalloc(variables, sizeof(double));
-	
-	double** GA = (double **)mxCalloc(variables+1, sizeof(double*));				//create Gauss Array (GA)
-	for (int i = 0; i <= variables; i++){
-		GA[i] = (double *)mxCalloc(variables+1, sizeof(double));
+	for(int i=0;i<variables-1;i++){
+		x[i]=mxGetPr(prhs[2])[i];
 	}
-	
-	for(int i=0;i<variables;i++){
-		xx[i]=mxGetPr(prhs[1])[i];
-	}
-	for(int i=0;i<variables;i++){
-		yy[i]=mxGetPr(prhs[2])[i];
-	}
-	
-	for(int i=0;i<variables;i++){
-		for(int j=0; j<variables;j++){
-			GA[i][j] = pow(xx[i],j);
-		}
-	}
-	for(int i=0;i<variables;i++){
-		GA[i][variables] = yy[i];
+	x[variables-1]=x[variables-2];
+	x[variables-1]+=inc;
+
+	for(int i=0;i<variables-1;i++){
+		y[i]=mxGetPr(prhs[3])[i];
 	}
 
-	
-	
-	int i, j, k;
-	for (i = 0; i<variables; i++)						//Pivotisation
-		for (k = i + 1; k<variables; k++)
-			if (abs(GA[i][i])<abs(GA[k][i]))
-				for (j = 0; j <= variables; j++)
-				{
-					long double temp = GA[i][j];
-					GA[i][j] = GA[k][j];
-					GA[k][j] = temp;
-				}
+	y[variables-1]=y[variables-2];
 
-	for (i = 0; i<variables - 1; i++)					//gauss elimination
-		for (k = i + 1; k<variables; k++)
+	
+	double len = (x[variables-1]-x[0])/inc +1;
+	
+	double* xx = (double *)mxCalloc(len, sizeof(double));
+	double* yy = (double *)mxCalloc(len, sizeof(double));
+	
+	double temp=x[0];
+	for(int i=0;temp <= x[variables-1]+inc;i++){
+		xx[i]=temp;
+		temp += inc;
+	}
+	
+	
+//Code von Marvin Lehmann start
+	unsigned int savepoint = 0;
+
+	// Zwischen jeweils 2 Punkten
+	for (unsigned int i = 0; i < variables-1; i++)
+	{
+		// Für alle Zwischenwerte (xx) y interpolieren (yy)
+		for (unsigned int j = savepoint; j < len; j++)
 		{
-			long double t = GA[k][i] / GA[i][i];
-			for (j = 0; j <= variables; j++)
-				GA[k][j] = GA[k][j] - t*GA[i][j];		//make the elements below the pivot elements equal to zero or elimnate the variables
+			if (xx[j] >= x[i] && xx[j] <= x[i + 1])
+			{
+				// Interpolationsformel
+				yy[j] = ((y[i + 1] - y[i]) / (x[i + 1] - x[i])) * (xx[j] - x[i]) + y[i];
+			}
+			else if (xx[j] > x[i + 1])
+			{
+				savepoint = j;
+				break;
+			}
 		}
+	}
+//Code von Marvin Lehmann ende
 
-	for (i = variables - 1; i >= 0; i--)                //back-substitution
-	{													//x is an array whose values correspond to the values of x,y,z..
-		x[i] = GA[i][variables];						//make the variable to be calculated equal to the rhs of the last equation
-		for (j = i + 1; j<variables; j++)
-			if (j != i)									//then subtract all the lhs values except the coefficient of the variable whose value is being calculated
-				x[i] = x[i] - GA[i][j] * x[j];
-		x[i] = x[i] / GA[i][i];							//now finally divide the rhs by the coefficient of the variable to be calculated
-	}
+	nlhs = 2;
 	
-	nlhs = variables;
-	for(int j=0; j < variables; j++){
-		plhs[j]=mxCreateDoubleScalar(x[j]);
-		
-	}
-	for(int l=0;l<variables;l++){
-		char temp;
-		
-		if(x[variables-1-l] != 0)
-		{
-			if(l!=0){
-			mexPrintf("+");
-			}
-			if(x[variables-1-l] < 0 ){
-				mexPrintf("-");
-				x[variables-l] *= -1;
-			}
-			temp=(char)(48+x[variables-1-l]);
-			mexPrintf("%c",temp);
-			
-			if(variables-1-l != 0){
-				mexPrintf("*");
-				mexPrintf("x");
-				mexPrintf("^");
-				temp=(char)(48+variables-1-l);
-				mexPrintf("%c",temp);
-			}
-			
-		}
-		
-	}
-	mexPrintf("\n");
+	plhs[0] = mxCreateDoubleMatrix(1, len, mxREAL);
+    memcpy(mxGetPr(plhs[0]), xx, len*sizeof(double));	
 	
-	
-	for (int i = 0; i <= variables; i++ ){
-		free(GA[i]);
-	}
-	
-	free(GA);
-	free(x);
-  
+	plhs[1] = mxCreateDoubleMatrix(1, len, mxREAL);
+    memcpy(mxGetPr(plhs[1]), yy, len*sizeof(double));
+
+
 return;
 }

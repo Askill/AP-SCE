@@ -7,103 +7,94 @@ void mexFunction(int nlhs, mxArray *plhs[], 			// Output variables
 				 int nrhs, const mxArray *prhs[]) 		// Input variables 
 {
 	int variables = *mxGetPr(prhs[0]);
+	double inc = *mxGetPr(prhs[1]);
 	
 	double* x = (double *)mxCalloc(variables, sizeof(double));					//create solution array
 	
-	double* xx = (double *)mxCalloc(variables, sizeof(double));
-	double* yy = (double *)mxCalloc(variables, sizeof(double));
+	double* x_in = (double *)mxCalloc(variables, sizeof(double));				//input x
+	double* y = (double *)mxCalloc(variables, sizeof(double));					//input y
 	
-	double** GA = (double **)mxCalloc(variables+1, sizeof(double*));				//create Gauss Array (GA)
+	double** GA = (double **)mxCalloc(variables+1, sizeof(double*));			//create Gauss Array (GA)
 	for (int i = 0; i <= variables; i++){
 		GA[i] = (double *)mxCalloc(variables+1, sizeof(double));
 	}
 	
 	for(int i=0;i<variables;i++){
-		xx[i]=mxGetPr(prhs[1])[i];
+		x_in[i]=mxGetPr(prhs[2])[i];
 	}
 	for(int i=0;i<variables;i++){
-		yy[i]=mxGetPr(prhs[2])[i];
+		y[i]=mxGetPr(prhs[3])[i];
 	}
 	
-	for(int i=0;i<variables;i++){
+	for(int i=0;i<variables;i++){											//fill GA with the polynoms
 		for(int j=0; j<variables;j++){
-			GA[i][j] = pow(xx[i],j);
+			GA[i][j] = pow(x_in[i],j);
 		}
 	}
-	for(int i=0;i<variables;i++){
-		GA[i][variables] = yy[i];
+	for(int i=0;i<variables;i++){											
+		GA[i][variables] = y[i];
 	}
 
+	double len = (x_in[variables-1]-x_in[0])/inc +1;
 	
+	double* xx = (double *)mxCalloc(len, sizeof(double));					//return array with x values
+	double* yy = (double *)mxCalloc(len, sizeof(double));					//return array with interpolated y values
 	
-	int i, j, k;
-	for (i = 0; i<variables; i++)						//Pivotisation
-		for (k = i + 1; k<variables; k++)
+	double temp=x_in[0];
+	for(int i=0;temp <= x_in[variables-1]+inc;i++){							//generate return array with x values
+		xx[i]=temp;
+		temp += inc;
+	}
+
+// Gauß
+	for (int i = 0; i<variables; i++)					//Pivotisation
+		for (int k = i + 1; k<variables; k++)
 			if (abs(GA[i][i])<abs(GA[k][i]))
-				for (j = 0; j <= variables; j++)
+				for (int j = 0; j <= variables; j++)
 				{
 					long double temp = GA[i][j];
 					GA[i][j] = GA[k][j];
 					GA[k][j] = temp;
 				}
 
-	for (i = 0; i<variables - 1; i++)					//gauss elimination
-		for (k = i + 1; k<variables; k++)
+	for (int i = 0; i<variables - 1; i++)				//gauss elimination
+		for (int k = i + 1; k<variables; k++)
 		{
 			long double t = GA[k][i] / GA[i][i];
-			for (j = 0; j <= variables; j++)
+			for (int j = 0; j <= variables; j++)
 				GA[k][j] = GA[k][j] - t*GA[i][j];		//make the elements below the pivot elements equal to zero or elimnate the variables
 		}
 
-	for (i = variables - 1; i >= 0; i--)                //back-substitution
+	for (int i = variables - 1; i >= 0; i--)            //back-substitution
 	{													//x is an array whose values correspond to the values of x,y,z..
 		x[i] = GA[i][variables];						//make the variable to be calculated equal to the rhs of the last equation
-		for (j = i + 1; j<variables; j++)
+		for (int j = i + 1; j<variables; j++)
 			if (j != i)									//then subtract all the lhs values except the coefficient of the variable whose value is being calculated
 				x[i] = x[i] - GA[i][j] * x[j];
 		x[i] = x[i] / GA[i][i];							//now finally divide the rhs by the coefficient of the variable to be calculated
 	}
-	
-	nlhs = variables;
-	for(int j=0; j < variables; j++){
-		plhs[j]=mxCreateDoubleScalar(x[j]);
-		
-	}
-	for(int l=0;l<variables;l++){
-		char temp;
-		
-		if(x[variables-1-l] != 0)
-		{
-			if(l!=0){
-			mexPrintf("+");
-			}
-			if(x[variables-1-l] < 0 ){
-				mexPrintf("-");
-				x[variables-l] *= -1;
-			}
-			temp=(char)(48+x[variables-1-l]);
-			mexPrintf("%c",temp);
-			
-			if(variables-1-l != 0){
-				mexPrintf("*");
-				mexPrintf("x");
-				mexPrintf("^");
-				temp=(char)(48+variables-1-l);
-				mexPrintf("%c",temp);
-			}
-			
+
+//polyval: filling yy with the interpolated values
+
+	for (int i = 0; i < len; i++){
+		double tmp = 0;
+		for (int j = 0; j < variables; j++){
+			tmp += pow(xx[i], j) * x[j];
 		}
-		
+		yy[i]=tmp;
 	}
-	mexPrintf("\n");
+
+//return values
+	nlhs = 2;
 	
+	plhs[0] = mxCreateDoubleMatrix(1, len, mxREAL);
+    memcpy(mxGetPr(plhs[0]), xx, len*sizeof(double));	
 	
-	for (int i = 0; i <= variables; i++ ){
-		free(GA[i]);
-	}
-	
-	free(GA);
-	free(x);
-  
+	plhs[1] = mxCreateDoubleMatrix(1, len, mxREAL);
+    memcpy(mxGetPr(plhs[1]), yy, len*sizeof(double));
+
+//free memory 
+
+// causes errors
 return;
 }
