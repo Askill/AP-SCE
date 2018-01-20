@@ -12,6 +12,9 @@ void mexFunction(int nlhs, mxArray *plhs[], 			// Output
 	func_Name = mxArrayToString(prhs[0]);
 	double* tout = mxGetPr(prhs[4]);
 	double* xout = mxGetPr(prhs[5]);*/
+	if (nrhs != 3)
+    mexErrMsgTxt ("Check your input parameters");
+	
 
 	double t0 = *mxGetPr(prhs[0]);
 	double tfinal= *mxGetPr(prhs[1]);

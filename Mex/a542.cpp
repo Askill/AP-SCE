@@ -17,6 +17,10 @@ double g_von_theta(long double x, long double y, char * func_Name)
 void mexFunction(int nlhs, mxArray *plhs[], 			// Output variables 
 				 int nrhs, const mxArray *prhs[]) 		// Input variables 
 {
+
+	if (nrhs != 4)
+    mexErrMsgTxt ("Check your input parameters");
+	
 	char *func_Name;
 	func_Name = mxArrayToString(prhs[0]);
 														//x = -2, y = -2

@@ -7,6 +7,9 @@
 void mexFunction(int nlhs, mxArray *plhs[], 			// Output  
 				 int nrhs, const mxArray *prhs[]) 		// Input  
 {
+	if (nrhs != 4)
+    mexErrMsgTxt ("Check your input parameters");
+
 	char *func_Name;
 	func_Name = mxArrayToString(prhs[0]);
 	

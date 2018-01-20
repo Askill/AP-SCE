@@ -1,18 +1,8 @@
-% function accepts 1 double and 1 double matrix (#of_variables, [row1;row2])
-% each row1 contains #of_variables+1 elements
-% returns solution vector
-% outputs the function
+% function accepts 1 double and 1 double matrix (#of_variables,increments, [x] , [y])
+% each row1 contains #of_variables elements
+% returns 2 vectors, xx and yy; yy being the interpolated y values
 % bsp.:
-%			6x^2+12x=30
-%			3x^2+ 3x= 9
-%		a21(2,[6,12,30;3,3,9]);
-%			2*x^1+1				<-function
-%
-%				OR
-%
-%			6x^2+12x=30
-%			3x^2+ 3x= 9
-%		[a1,a2]=a21(2,[6,12,30;3,3,9])
-%			2*x^1+1				<-function
-%			a1 = 1				<-factors of x^...
-%			a2 = 2
+%		    
+%		[a1,a2]=a411(5,0.1,[1,2,3,4,5],[34,22,45,56,66]);
+%       a1 = 1.0000   1.1000   1.2000   1.3000   1.4000   1.5000   1.6000   1.7000   1.8000   1.9000   2.0000   2.1000   2.2000   2.3000   2.4000   2.5000   2.6000   2.7000   2.8000   2.9000   3.0000   3.1000   3.2000   3.3000   3.4000   3.5000   3.6000   3.7000   3.8000   3.9000   4.0000
+%       a2 = 45.000   38.312   32.856   28.544   25.288   23.000   21.592   20.976   21.064   21.768   23.000   24.672   26.696   28.984   31.448   34.000   36.552   39.016   41.304   43.328   45.000   46.232   46.936   47.024   46.408   45.000   42.712   39.456   35.144   29.688   23.000

@@ -11,5 +11,5 @@
 %		y=4*x^3-1;
 %		end
 %
-%		a32("func","func_der",2,100)
+%		a33("func","func_der",2,100)
 %		ans=1.8556

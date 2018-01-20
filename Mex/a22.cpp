@@ -73,6 +73,9 @@ double determinant(double** ga, int m)
 void mexFunction(int nlhs, mxArray *plhs[], 			// Output variables 
 				 int nrhs, const mxArray *prhs[]) 		// Input variables 
 {
+	if (nrhs != 2 || ! mxIsNumeric (prhs[0]))
+    mexErrMsgTxt ("Check your input parameters");
+
 	variables = *mxGetPr(prhs[0]);
 	
 	double* x = (double *)mxCalloc(variables, sizeof(double));
@@ -100,21 +103,16 @@ void mexFunction(int nlhs, mxArray *plhs[], 			// Output variables
 	for(int i = 0; i < variables; i++)
 	{
 		swap_column(CA2, i);
-		x[i] = determinant(CA2, variables);
+		x[i] = determinant(CA2, variables)/detA;
 	}
 
 	// Output
-	for(int j=0; j < variables; j++){
-		plhs[j]=mxCreateDoubleScalar(x[j]/detA );
-		
-	} 
-	// free memory
-	for (int i = 0; i <= variables; i++ ){
-		free(CA2[i]);
-	}
 	
-	free(CA2);
-	free(x);
+	nlhs = 1;
+	plhs[0] = mxCreateDoubleMatrix(1, variables, mxREAL);
+    memcpy(mxGetPr(plhs[0]), x, variables*sizeof(double));
+
+
   
 return;
 }

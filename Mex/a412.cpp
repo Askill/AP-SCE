@@ -6,6 +6,13 @@
 void mexFunction(int nlhs, mxArray *plhs[], 			// Output variables 
 				 int nrhs, const mxArray *prhs[]) 		// Input variables 
 {
+	if (nrhs != 4)
+    mexErrMsgTxt ("Check your input parameters");
+	if( mxGetNumberOfElements(prhs[2]) != mxGetNumberOfElements(prhs[3]))
+	{
+	mexErrMsgTxt ("arrays need to be of same size!");
+	}
+
 	int variables = *mxGetPr(prhs[0]);
 	variables++;
 	double inc = *mxGetPr(prhs[1]);
