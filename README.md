@@ -1,5 +1,5 @@
 #  SCE
-####   outout      file    Name        input
+####   outpout      file    Name        input
 ####   double      a11     mass        ([heights], [radii], [densities]) 
 ####   double      a12     resistance  ([heights], [radii], [densities], [resistances])
 ####   [double]    a21     Gauß        (#of_variables, [row1;row2])
